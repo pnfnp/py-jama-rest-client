@@ -1432,15 +1432,16 @@ class JamaClient:
         JamaClient.__handle_response_status(response)
         return response.json()["meta"]["id"]
 
-    def post_item_attachment(self, item_id, attachment_id):
+    def post_item_attachment(self, item_id, attachment_id, item_type="items"):
         """
         Add an existing attachment to the item with the specified ID
+        :param item_type: this is the type of item with possibles items|testruns|testcyles
         :param item_id: this is the ID of the item
         :param attachment_id: The ID of the attachment
         :return: 201 if successful / the response status of the post operation
         """
         body = {"attachment": attachment_id}
-        resource_path = "items/" + str(item_id) + "/attachments"
+        resource_path = item_type.lower() + "/" + str(item_id) + "/attachments"
         headers = {"content-type": "application/json"}
         try:
             response = self.__core.post(
