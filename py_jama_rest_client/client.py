@@ -1118,6 +1118,19 @@ class JamaClient:
             raise APIException(str(err))
         JamaClient.__handle_response_status(response)
         return response.json()["data"]
+    
+    def get_test_run_tags(self, test_run_id: int):
+        """This method will post a test run to Jama through the API"""
+        resource_path = "testruns/" + str(test_run_id) + "/tags"
+
+        try:
+            response = self.__core.get(resource_path)
+        except CoreException as err:
+            py_jama_rest_client_logger.error(err)
+            raise APIException(str(err))
+        JamaClient.__handle_response_status(response)
+        return response.json()["data"]
+
 
     def delete_item(self, item_id):
         """
@@ -1604,6 +1617,19 @@ class JamaClient:
         headers = {"content-type": "application/json"}
         try:
             response = self.__core.put(resource_path, json=data, headers=headers)
+        except CoreException as err:
+            py_jama_rest_client_logger.error(err)
+            raise APIException(str(err))
+        return self.__handle_response_status(response)
+
+    def post_test_run_tag(self, test_run_id: int, tag_id: int):
+        """This method will post a test run to Jama through the API"""
+        resource_path = "testruns/" + str(test_run_id) + "/tags"
+        headers = {"content-type": "application/json"}
+        data = {'tag': tag_id}
+
+        try:
+            response = self.__core.post(resource_path, json=data, headers=headers)
         except CoreException as err:
             py_jama_rest_client_logger.error(err)
             raise APIException(str(err))
